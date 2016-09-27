@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head> 
+  <title>Random Quote Generator</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="author" content="Anna Jolly">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+
+<style>
+
+#centerThis {
+  background: white;
+  width: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 20px;
+  resize: both;
+  overflow: auto;
+}
+
+#target1 {
+  background: white;
+  border-radius: 1%;
+  padding: 20px;
+}
+
+#target2 {
+  color: black;
+}
+
+a {
+  color: black;
+}
+
+.myButton {
+  width: 50px;
+}
+
+.colorButton {
+  color: white;
+}
+
+</style>
+
+<script>
+
+function tweetIt () {
+  var phrase = "Quote: " + document.getElementById('quoteT').innerText + ". Author: " + document.getElementById('quoteA').innerText + ".";
+  
+  
+  var tweetUrl = 'https://twitter.com/share?text=' +
+    encodeURIComponent(phrase);
+  window.open(tweetUrl);
+}
+
+function getRandomColor() {
+  var r = Math.floor(Math.random()*(255+1));
+  var g = Math.floor(Math.random()*(255+1));
+  var b = Math.floor(Math.random()*(255+1));
+  return "rgb(" + r + "," + g + "," + b + ")";
+}
+
+var randColor = getRandomColor();
+
+$(document).ready(function() {
+  $("#target1").css("color",randColor);
+  $("#target2").css("background", randColor);
+  $("body").css("background", randColor);
+  $(".colorButton").css("background", randColor);
+  $("#getQuote").on("click", function(){
+    randColor = getRandomColor();
+    $("#target1").css("color",randColor);
+  $("#target2").css("background", randColor);
+  $("body").css("background", randColor);
+  $(".colorButton").css("background", randColor);
+    $.ajax({url: "http://crossorigin.me/http://api.forismatic.com/api/1.0/?method=getQuote&key=457653&format=json&lang=en", success: function(result){
+            $(".quote").html("<blockquote><p>" + result.quoteText + "</p><footer>" + result.quoteAuthor + "</footer></blockquote>");
+        }});
+    });
+});
+
+</script>
+
+<body>
+<div class="container-fluid">
+  <div id="centerThis" style="background: transparent">
+    <div id=target1>
+      <h1 class="text-center">Random Quote:</h1>
+      <div class="quote">
+        <blockquote>
+          <p id="quoteT">Humans are allergic to change. They love to say, 'We've always done it this way.' I try to fight that. That's why I have a clock on my wall that runs counter-clockwise.</p>
+          <footer id="quoteA">Grace Hopper</footer>
+      </blockquote>
+      </div>
+      <div class="row">
+        <div class="col-xs-2">
+          <a href="https://twitter.com/?lang=en" target='_blank'><button onclick="tweetIt()" class="btn myButton colorButton"><i class="fa fa-twitter" aria-hidden="true"></i></button></a>
+        </div>
+        <div class="col-xs-2">
+          <a href="https://www.tumblr.com/dashboard" target='_blank'><button onclick="tweetIt()" class="btn myButton colorButton"><i class="fa fa-tumblr" aria-hidden="true"></i></button></a>
+        </div>
+        <div class="col-xs-4">
+        </div>
+        <div class="col-xs-4">
+          <button id = "getQuote" class = "btn colorButton">
+        Get Quote
+      </button>
+        </div>
+      </div>
+    </div>
+    <div id="target2">
+      <h5 id="byAnna" class="text-center">by <a href="http://codepen.io/annajolly/" target="_blank">anna</a></h5>
+    </div>
+  </div>
+</div>
+</body>
+
+</html>
